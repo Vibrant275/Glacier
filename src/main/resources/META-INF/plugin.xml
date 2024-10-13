@@ -26,8 +26,8 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <moduleBuilder
-                builderClass="com.vibrant.glacier.CreateGlacierProject"
-                id="DEMO_STEP"
+                builderClass="com.vibrant.glacier.module.GlacierModuleBuilder"
+                id="projectWizard"
                 order="first"/>
     </extensions>
 
