@@ -1,0 +1,45 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+    <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
+    <id>com.vibrant.Glacier</id>
+
+    <!-- Public plugin name should be written in Title Case.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
+    <name>Glacier</name>
+
+    <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
+    <vendor email="vibrant.official275@gmail.com" url="https://www.yourcompany.com">Vibrant</vendor>
+
+    <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
+         Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
+    <description><![CDATA[
+    Enter short description for your plugin here.<br>
+    <em>most HTML tags may be used</em>
+  ]]></description>
+
+
+    <depends>com.intellij.modules.platform</depends>
+    <extensions defaultExtensionNs="com.intellij">
+
+    </extensions>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <moduleBuilder
+                builderClass="com.vibrant.glacier.CreateGlacierProject"
+                id="DEMO_STEP"
+                order="first"/>
+    </extensions>
+
+<!--    <actions>-->
+<!--        <group id="glacier.NewProject" text="Create Glacier Project" description="Create a new Glacier Project">-->
+
+<!--            <add-to-group group-id="NewProjectOrModuleGroup" anchor="first"/>-->
+<!--            <action id="CreateGlacierProject" class="com.vibrant.glacier.CreateGlacierProject" text="New">-->
+
+<!--            </action>-->
+
+<!--        </group>-->
+<!--    </actions>-->
+
+</idea-plugin>
