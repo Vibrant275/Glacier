@@ -3,8 +3,11 @@ package com.vibrant.glacier.module
 import GlacierProjectWizard
 import com.intellij.ide.util.projectWizard.*
 import com.intellij.openapi.Disposable
+import com.intellij.openapi.module.ModifiableModuleModel
 import com.intellij.openapi.module.Module
 import com.intellij.openapi.module.ModuleType
+import com.intellij.openapi.project.Project
+import com.intellij.openapi.roots.ui.configuration.ModulesProvider
 import com.intellij.openapi.ui.ComboBox
 import com.intellij.openapi.ui.Messages
 import com.intellij.ui.JBColor
@@ -14,6 +17,7 @@ import java.awt.Cursor
 import java.awt.Desktop
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
+import java.io.File
 import java.net.URI
 import javax.swing.*
 import javax.swing.border.EmptyBorder
@@ -25,7 +29,39 @@ class GlacierModuleBuilder : ModuleBuilder(), ModuleBuilderListener {
         return GlacierModuleType.instance
     }
 
+    override fun commit(
+        project: Project,
+        model: ModifiableModuleModel?,
+        modulesProvider: ModulesProvider?
+    ): MutableList<Module>? {
+        return super.commit(project, model, modulesProvider)
+    }
+
     override fun moduleCreated(module: Module) {
+        // Get the project base directory
+        val projectDir = module.project.basePath?.let { File(it) }
+
+        // Define your framework structure (subdirectories)
+        val subDirs = listOf("src", "include", "lib", "bin", "docs")
+
+        // Create subdirectories
+        subDirs.forEach { dir ->
+            val directory = File(projectDir, dir)
+            if (!directory.exists()) {
+                directory.mkdir() // Create the directory if it doesn't exist
+            }
+        }
+
+        // Create custom files (example files)
+        val mainFile = File(projectDir, "src/main.cpp")
+        if (!mainFile.exists()) {
+            mainFile.writeText("// Main entry point for the Glacier application\n")
+        }
+
+        val readmeFile = File(projectDir, "README.md")
+        if (!readmeFile.exists()) {
+            readmeFile.writeText("# Glacier Project\n\nThis is a Glacier project.\n")
+        }
     }
 
     override fun getCustomOptionsStep(context: WizardContext?, parentDisposable: Disposable?): ModuleWizardStep? {
@@ -33,6 +69,8 @@ class GlacierModuleBuilder : ModuleBuilder(), ModuleBuilderListener {
     }
 
     override fun modifySettingsStep(settingsStep: SettingsStep): ModuleWizardStep? {
+
+
         val projectTypeComboBox = ComboBox(arrayOf("Application", "Library"))
 
         val androidCheckBox = JCheckBox("Android", true)
@@ -107,15 +145,6 @@ class GlacierModuleBuilder : ModuleBuilder(), ModuleBuilderListener {
         settingsStep.addSettingsComponent(helpPanelSpacer)
         settingsStep.addSettingsComponent(helpPanel)
 
-
         return super.modifySettingsStep(settingsStep)
-    }
-
-    // Function to show help dialog
-    private fun showHelpDialog() {
-        val message = "For more information, please visit our website:\n\n" +
-                "https://www.example.com\n\n" +
-                "You can find documentation, tutorials, and support there."
-        Messages.showMessageDialog(message, "Help", Messages.getInformationIcon())
     }
 }
